@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Produksi</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    background:#000;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+.card{
+    background:#111;
+    border:1px solid red;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 0 20px red;
+}
+
+h1{
+    text-align:center;
+    color:#ffb300;
+}
+
+canvas{
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>MONITORING PRODUKSI</h1>
+
+    <div class="card">
+
+        <canvas id="productionChart"></canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+async function loadChart(){
+
+    const response =
+    await fetch("http://localhost:3000/production")
+
+    const data =
+    await response.json()
+
+    const labels =
+    data.map(x=>x.WEEK)
+
+    const plan =
+    data.map(x=>x.PLAN)
+
+    const actual =
+    data.map(x=>x.ACTUAL)
+
+    new Chart(document.getElementById("productionChart"),{
+
+        type:'bar',
+
+        data:{
+
+            labels:labels,
+
+            datasets:[
+
+            {
+                label:'PLAN',
+
+                data:plan,
+
+                backgroundColor:'yellow'
+            },
+
+            {
+                label:'ACTUAL',
+
+                data:actual,
+
+                backgroundColor:'red'
+            }
+
+            ]
+
+        }
+
+    })
+
+}
+
+loadChart()
+
+</script>
+
+</body>
+</html>
