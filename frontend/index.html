@@ -6,6 +6,7 @@
     <title>Mining Operation Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <style>
         :root { --bg-dark: #1a1c1e; --panel-dark: #2d3136; --gold-mining: #f39c12; --text-light: #ecf0f1; --border-color: #444; }
         body { background-color: var(--bg-dark); color: var(--text-light); font-family: sans-serif; margin: 0; padding: 20px; }
@@ -30,7 +31,7 @@
 <body>
 
     <div class="header">
-        <img src="Logo PKA.png" alt="Logo" class="company-logo">
+        <img src="logo PKA.png" class="company-logo" alt="Logo Perusahaan">
         <div>
             <h1 style="margin:0;">MINING OPERATION CONTROL</h1>
             <p style="margin:0; color: var(--gold-mining);">PRODUCTION PERFORMANCE</p>
@@ -38,10 +39,18 @@
     </div>
 
     <div class="filter-panel">
-        <div><strong>Dari:</strong> <input type="date" id="dateStart"></div>
-        <div><strong>Sampai:</strong> <input type="date" id="dateEnd"></div>
-        <button class="btn-submit">HITUNG DATA</button>
-    </div>
+    <div><strong>Dari:</strong> <input type="date" id="dateStart"></div>
+    <div><strong>Sampai:</strong> <input type="date" id="dateEnd"></div>
+
+    <!-- TARUH INI DI SINI -->
+    <select id="location">
+        <option value="ALL">ALL LOCATION</option>
+        <option value="RAJAWALI">RAJAWALI</option>
+        <option value="EAGLE">EAGLE</option>
+    </select>
+
+    <button class="btn-submit">HITUNG DATA</button>
+</div>
 
     <div class="top-grid">
         <div class="card"><div class="card-label">PLAN OB</div><div class="card-val">85.400</div></div>
@@ -83,6 +92,8 @@
     <script>
 
 Chart.register(ChartDataLabels)
+let rawData = [];
+let chartOB, chartCoal, chartFuel, chartFleet;
 
 
 // =========================
